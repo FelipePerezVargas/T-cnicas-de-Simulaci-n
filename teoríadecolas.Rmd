@@ -1,0 +1,266 @@
+---
+title: "Líneas de Espera o Teoría de Colas"
+author: "Felipe Pérez Vargas"
+date: "3/11/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+La distribución de llegadas esta definida como:
+
+$$ p_{n}(t)=\frac{(\lambda t)^{n}}{n!}\exp^{-\lambda t} $$      
+La distribución del tiempo de servicio está definido como:
+
+$$ P_{( t\leq T ) } =1-\exp^{-\mu T} $$
+Probabilidad del tiempo promedio de espera en el sistema
+
+$$ W_{s}(t)=exp^{-t\mu(1-\frac{\lambda}{\mu})}  $$
+
+
+
+
+Probabilidad de estar cierto tiempo en la línea de espera 
+
+$$ W_{q}(t)= (\frac{\lambda}{\mu}) exp^{-t\mu(1-\frac{\lambda}{\mu})}  $$
+$\lambda=30$
+$\mu=35$
+
+Utilizaci´on del tiempo  empleado de la caja de salida.
+
+$$p=\frac{\lambda}{\mu}=.8571*100=85.71\%$$
+El sistema pasa el $85.71\%$ ocupado  y 14.28 del tiempo ocioso
+
+
+
+N´umero de clientes que entran al sistema.
+
+
+$$ L=\frac{\lambda}{\mu-\lambda}=6 Personas  $$
+
+
+N´umero de clientes formados en la fila.
+
+$$L_{q}=p*L=5.14 $$
+Significa que hay cinco personas esperando y una esta siendo atendida
+
+
+Tiempo transcurrido dentro del sistema.
+
+
+$$ W=\frac{1}{\mu-\lambda} = 0.2 horas=12 minutos$$
+
+Tiempo de espera en la fila.
+
+
+$$ w_{q}=pW=0.17horas=10.29minutos  $$
+
+## Ejercicio
+
+
+Un avión tarda unos 4 minutos de media en aterrizar a partir del momento en que la torre de control le da la señal de aterrizaje. Si las llegadas de los aviones se producen por termino medio, a razón de 8 por hora y siguiendo un proceso de Poisson, ¿cuánto va a esperar el piloto dando vueltas al aeropuerto antes de recibir la señal de tierra?
+
+
+$\lambda=8$
+$\mu=15$
+$w_{q}=0.08$ horas
+4.57 minutos
+
+
+
+
+
+
+## Multiple servidores 
+
+En el modelo con múltiples servidores, los clientes forman una sola fila y escogen, entre s servidores, aquel que esté disponible. 
+
+
+El sistema de servicio tiene una sola fase. Partiremos de las siguientes suposiciones, además de las que hicimos para el modelo con un solo servidor: tenemos s servidores idénticos, y la distribución del servicio para cada uno de ellos es exponencial, con un tiempo medio de servicio igual a $\frac{1}{\mu}$
+
+
+Con estas suposiciones, podemos aplicar varias fórmulas a fin de describir las características de operación del sistema
+de servicio:
+
+
+Utilización promedio del sistema
+
+$$ p=\frac{\lambda}{s\mu}$$
+Tiempo ocioso del sistema 
+
+
+$$ p_{o}=1-p=1-\frac{\lambda}{s\mu} $$
+Probabilidad de que haya cero clientes en el sistema
+
+
+$$ P_{0}=[\sum_{n=0}^{s-1}\frac{(\frac{\lambda}{\mu})^{n}}{n!}+\frac{(\frac{\lambda}{\mu})^{s}}{s!}(\frac{1}{1-p})]^{-1} $$
+
+Probabilidad de que haya n clientes en el sistema
+
+
+$$ P_{n}=\frac{(\frac{\lambda}{\mu})^{n}}{n!}P_{0}=\frac{(\frac{\lambda}{\mu})^{n}}{s!s^{n-s}}$$
+
+El número promedio de clientes en la fila de espera
+
+$$L_{q}=\frac{P_{0}(\frac{\lambda}{\mu})^{s}}{s!(1-p)^{2}}p $$
+
+El tiempo promedio de clientes en la fila de espera
+
+$$ W_q=\frac{L_{q}}{\lambda}$$
+
+Tiempo promedio transcurrido en el sistema, incluido el servicio
+
+
+$$W= W_{q}+\frac{1}{\mu}  $$
+Tiempo promedio de clientes en el sistema 
+
+$$ L=\lambda W$$
+
+
+Ejemplo de estimación del tiempo de ocio y los costos de operación por hora, mediante el modelo con
+múltiples servidores.
+
+La gerencia de DHL, está preocupada por la cantidad de tiempo que los camiones de la compañía permanecen ociosos, en espera de ser descargados. Esta terminal de carga funciona con cuatro plataformas de descarga. Cada una de éstas requiere una cuadrilla de dos empleados, y cada cuadrilla cuesta $\$30$ pesos por hora. El costo estimado de un camión ocioso es de $\$50$ por hora. Los camiones llegan a un ritmo promedio de tres por hora, siguiendo una distribución de Poisson. En promedio, una cuadrilla es capaz de descargar un semirremolque en una hora, y los tiempos de servicio son exponenciales. ¿Cuál es el costo total por hora de la operación de este sistema?
+
+Datos:
+
+$\mu=1$  #horas (tiempo de servicio)
+$\lambda=3$ #horas (tiempo promedio llegada)
+$s=4$ #Número de servidores
+$n=0$
+$cco=50$ #costo de camión ocioso
+$cc=30$  #Costo por cada cuadrilla
+
+Solución
+
+La utilización promedio de las cuatro plataformas es:
+
+$$ p=\frac{\lambda}{s\mu}=\frac{3}{4*1}=\frac{3}{4}=0.75=75 \% $$
+
+
+Probabilidad de que no haya ningún camión en el sistema
+
+$$ [\sum_{n=0}^{s-1}\frac{(\frac{\lambda}{\mu})^{n}}{n!}+\frac{(\frac{\lambda}{\mu})^{s}}{s!}(\frac{1}{1-p})]^{-1}=[\sum_{s=0}^{4-1}\frac{(\frac{3}{1}^{0})}{0!}+\frac{(3/1)^{s}}{4!}(\frac{1}{1-0.75})]^{-1} $$
+número promedio de camiones en la fila
+
+$$L_{q}=\frac{P_{0}(\frac{\lambda}{\mu})^{s}}{s!(1-p)^{2}}p=\frac{0.0377(\frac{3}{1})^{4}(0.75)}{4!(1-0.75)^{2}}=1.53 $$
+
+
+tiempo promedio de espera en la fila.
+
+$$ W_q=\frac{L_{q}}{\lambda}=\frac{1.53}{3}=0.51$$
+tiempo promedio de espera en el sistema
+
+$$W= W_{q}+\frac{1}{\mu}=0.51+\frac{1}{1}=1.51  $$
+número promedio de camiones en el sistema es:
+
+$$ L=\lambda W=3*1.51=4.53$$
+Ahora podemos calcular el costo por hora correspondiente a la mano de obra y camiones ociosos
+
+
+Costo de mano de obra $30(s)=30*4=120$
+Costo de camiones ociosos $50(L)=50(4.53)=226.5$
+
+Costo total por hora $\$346.5$
+
+
+
+
+## Ejercicio
+
+suponga que un cajero bancario puede atender a los clientes a una
+velocidad promedio de 10 clientes por hora. Además, suponga que los clientes llegan a la ventanilla de los cajeros a una tasa promedio de 7 por hora. Se considera que las llegadas siguen la distribución Poisson y el tiempo de servicio sigue la distribución exponencial. En la condición uniforme el sistema de cola tendrá las siguientes características de desempeño: 
+
+
+
+Los trabajadores de una fabrica tienen que llevar su trabajo al departamento de control de calidad antes de que el producto llegue al final del proceso de producción. Hay un gran número de empleados y las llegadas son aproximadamente de 20 por hora, siguiendo un proceso de Poisson. El tiempo para inspeccionar una pieza sigue una distribución exponencial de media 4 minutos. Calcula el número medio de trabajadores en el control de calidad si hay:
+
+a) Dos inspectores
+a) Tres Inspectores
+
+
+
+
+## Fuente finita
+
+Consideremos ahora una situación en la que todas las suposiciones del modelo con un solo servidor son apropiadas,
+excepto una. En este caso, la población de clientes es finita, porque sólo existen N clientes potenciales.
+
+
+probabilidad de que cero clientes estén en el sistema 
+
+$$P_{0}=[\sum_{n=0}^{N}\frac{N!}{(N-n)!}(\frac{\lambda}{\mu})]^{-1} $$
+
+utilización promedio del servidor
+
+
+$$ p=1-P_{0}$$
+
+número promedio de clientes en la fila de espera
+
+$$ L_{q}=N-\frac{(\lambda+\mu)}{\lambda}(1-P_{0})$$
+tiempo promedio de clientes en el sistema
+
+$$ L=N-\frac{\mu}{\lambda}(1-P_{0})$$
+
+ tiempo promedio de espera en la fila
+ 
+ $$ W_{q}=L_{q}[(N-L)\lambda]^{-1} $$ 
+ 
+ tiempo promedio transcurrido en el sistema, incluido el servicio 
+ 
+ $$ W=L[(N-L)\lambda]^{-1}$$
+ 
+Ejemplo de análisis de los costos de mantenimiento aplicando el modelo con fuente finita. Hace casi tres años, Gear Tandil SA instaló un conjunto de 10 robots que incrementó considerablemente la productividad de su mano de obra, pero en el último tiempo la atención se ha enfocado en el mantenimiento. La empresa no aplica el mantenimiento preventivo a los robots, en virtud de la gran variabilidad que se observa en la distribución de las averías. Cada máquina tiene una distribución exponencial de averías (o distribución entre llegadas), con un tiempo
+promedio de 200 horas entre una y otra falla. Cada hora-máquina perdida como tiempo ocioso cuesta $\$30$, lo cual significa que la empresa tiene que reaccionar con rapidez en cuanto falla una máquina. La empresa contrata sólo a una persona de mantenimiento, quien necesita 10 horas de promedio para reparar un robot. Los tiempos de  antenimiento real están distribuidos exponencialmente. La tasa de salarios es de $\$10$ por hora para el encargado de mantenimiento, el cual puede dedicarse productivamente a otras actividades cuando no hay robots que reparar. Calcule el costo diario por concepto de tiempo ocioso de la mano de obra y los robots.
+
+
+Solución 
+
+La probabilidad de que el sistema de mantenimiento esté vacío es:
+
+
+
+La utilización promedio del empleado de mantenimiento es:
+
+
+
+El número promedio de robots en espera de ser reparados es:
+
+
+El número promedio de robots que están en la fila y en proceso de reparación es:
+
+
+
+El tiempo promedio de espera de los robots, para ser atendidos por el encargado del mantenimiento es:
+
+
+
+Finalmente, el tiempo promedio que transcurre desde que un robot averiado empieza a requerir el servicio hasta
+que se lleva a cabo su reparación es:
+
+
+
+El costo diario por concepto de tiempo ocioso de la mano de obra y los robots es:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

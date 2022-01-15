@@ -1,0 +1,760 @@
+---
+title: "Generación de Variables Aleatorias"
+author: "Felipe Pérez Vargas"
+date: "6/10/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+  ## Dudas 
+
+```{r}
+datos<-c(0,1,8,12,20,10,3,1,0)
+seq(0,17, by=1)
+h<-hist(datos, breaks = 10, col = "lightblue", border = "green")
+POA<-cumsum(datos/sum(datos));POA
+Z<-(seq(1,17, by=2)-mean(datos))/sd(datos)
+Z
+PEA<-c(0.2327,0.3265,0.4362,0.5511,0.6691,0.7601,0.8403,0.9006,0.9423)
+KS<-max(abs(POA-PEA))
+d<-0.183
+if(KS<=d){cat("Se Acepta la Hipótesis")} else{cat("Se Rechaza la Hipótesis")}
+
+#### Ejercicio 5 ####
+library(EnvStats)
+x<-c(3,3,3,3,3,4,3,2,1,2,4,3,2,3,1,2,2,3,4,3,3,5,2,2,4,
+     2,5,2,2,3,3,1,3,0,3,2,5,4,3,2,2,3,0,4,4,5,3,2,3,4)
+h<-hist(x)
+h<-hist(x, breaks = sqrt(length(x))) #
+FO<-h$counts;FO
+h$breaks
+
+hist(x, freq=F, col = "lightblue", border = "green")
+xf<-rbinom(length(x),5,.2);xf #Binomial 
+xf<-rnorm(length(x), mean(x), sd(x)) #Normal
+xf<-rpois(length(x), mean(x)) # Poison
+xf<-rweibull(length(x), shape=2, scale = 5) #Weibull
+xf<-rtri(length(x), min = 0, max = 5, mode = 2.5) #Triangular cargando el paquete 
+xf<-runif(length(x), min(x), max(x)) # Uniforme
+xf<-rlnorm(length(x), meanlog = log(mean(x)), sdlog = log(sd(x))) #Log-Normal
+lines(density(xf, bw=1))
+
+FX<-((x-min(x))^{2})/((max(x)-min(x))*(mean(x)-min(x)))
+FX1<-1-((max(x)-x)^{2})/((max(x)-min(x))*(max(x)-mean(x)))
+
+FX<-vector()
+FX1<-vector()
+```
+
+
+
+
+## Introducción
+
+Una vez aceptadas las pruebas de medias, varianza, forma
+e independencia sobre los números aleatorios entre 0 y 1,
+se puede hacer uso de esos números para g enerar variables 
+aleatorias.
+
+Existen varios métodos para generar variables aleatorias
+
+* Método de la Transformada Invera
+* Método de convolución
+* Método de aceptación y rechazo
+* Método directo
+
+## Método de la transformación inversa para variables continuas
+
+
+Este método se utiliza cuando se desea simular variables del 
+tipo continuo. El método usa la distribución acumulada F(x)
+de la distribución de probabilidad que se va a simular mediante
+integración. Ya que el rango de F(x) se encuentra en el intervalo 0 a 1, pueden generarse un número eleatorio $r_{i}$ para determinar el valor de la variable aleatoria cuya distribución acumulada a $r_{i}$
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im15.png)
+
+* El muestreo se logra al transformar los
+números aleatorios en una variable aleatoria continua a partir
+de la distribución especificada.
+* Hay muchos métodos diferentes para generar variables
+aleatorias continuas.
+* La selección de un algoritmo particular dependerá de la
+distribución a partir de la cual se quiere generar, tomando en
+cuenta factores como la exactitud de las variables aleatorias, las eficiencias de
+cómputo y almacenaje, y la complejidad del algoritmo.
+
+
+## Distribución Exponencial 
+
+Se desea simular una variable aleatoria con una distribución
+exponencial; La función de densidad es:
+
+$$ f(x)=\lambda e^{-\lambda x}  \hspace{1cm} si \hspace{1cm}
+x\geq 0$$
+
+La distribución acumulada de esta función es de cero a un valor x es de:
+
+$$ F(x)=1-e^{-\lambda x}$$
+Si hacemos $F(x)=r_{i}$, despejamos $x_{i}$ tenemos que:
+
+
+$$  x_{i}=-\frac{1}{\lambda}ln(1-r_{i})$$
+
+## Ejemplo 1
+
+
+```{r }
+
+lambda <- 2 #
+n <- 10E3   # Número de Simulaciones
+set.seed(165)
+ri <- runif(n) #Números aleatorios
+xi <- -log(1-ri)/lambda # Variables aleatorias
+hist(xi,freq = FALSE, breaks='FD', col='blueviolet', border="darkred",
+     main = "", xlim = c(0,5), ylim = c(0, 2.5), ylab = 'Densidad')
+curve(dexp(x, lambda), add = TRUE, col='chocolate') #Distribución de probabilidades
+ks.test(xi,"pexp",rate=2)
+
+```
+
+Se puede comprobar que las variables aleatorias generadas se adecuan perfectamente a los números aleatorios.
+
+```{r}
+n=10^4 #Cantidad de números y variables a generar
+ri=runif(n) #Generación de números aleatorios 
+xi=-log(ri) #Transformación de variables uniformes
+y=rexp(n) #
+par(mfrow=c(1,2))
+hist(xi,freq=F,main="Transformada inversa", col = "coral1", border = "green",
+     xlab = 'Variable aleatoria', ylab = 'Densidad')
+curve(dexp(x),add=T,col=2)
+hist(y,freq=F,main="Distribución Exponencial", col = "coral1", border = "green",
+     xlab = 'Variable aleatoria', ylab = 'Densidad')
+curve(dexp(x),add=T,col=2)
+```
+
+## Ejemplo 2
+
+Realiza el despeje de las siguientes funciones de distribución
+
+# Distribución de Weibull 
+
+$$   F(x) = \left\{\begin{array}{lr}
+        1-e^{(\frac{x}{\beta})^\alpha}, & \text{si } x>0\\
+        0, & \text{de otra manera}
+        \end{array}\right\} $$
+
+para obtener la siguiente relación 
+
+$$ x_{i}=\beta [-ln(1-r_{i}) ]^{\frac{1}{\alpha}}  $$
+```{r}
+n<-1000
+a<- 2
+b<-3
+  ri <- runif(n)
+  xi <- (-(1/b^a)*log(1-ri))^(1/a)
+ hist(xi,freq = F, col = "lightblue", border = "green")
+curve(dweibull(x,shape = 2,scale = 1/3),add=T,col=2)
+
+ks.test(xi,"pweibull",shape=2,scale=1/3)
+
+```
+Haciendo el mismo procedimiento para comprobar que las variables aleatorias cumplen lo esperado
+
+```{r}
+n=10^4 #Cantidad de números y variables a generar
+ri=runif(n) #Generación de números aleatorios 
+a<-2
+b<-3
+xi=(-(1/b^a)*log(1-ri))^(1/a) #Transformación de variables uniformes
+y=rweibull(n,shape = 2,scale = 1/3) #
+par(mfrow=c(1,2))
+hist(xi,freq=F,main="Transformada inversa", col = "aquamarine1", border = "green",
+     xlab = 'Variable aleatoria', ylab = 'Densidad')
+curve(dweibull(x,shape = 2,scale = 1/3),add=T,col=2)
+hist(y,freq=F,main="Distribución Exponencial", col = "aquamarine1", border = "green",
+     xlab = 'Número Aleatorio', ylab = 'Densidad')
+curve(dweibull(x,shape = 2,scale = 1/3),add=T,col=2)
+```
+
+
+
+## Ejemplo 3 ##
+
+Demuestra que para la función de distribución uniforme
+
+$$ r_{i}=F(X)=\frac{x_{i}-a}{b-a}   $$
+es
+
+
+$$ r_{i}=a+r_{i}(b-a) $$
+```{r}
+a<-0
+b<-1
+n<-1000
+ri<-runif(n,a,b)
+xi<-a+ri*(b-a)
+hist(xi,freq = F, col = "lightblue", border = "green")
+curve(dunif(x, a,b),add=T,col=2)
+ks.test(xi,"punif")
+```
+
+Resumiendo un poco los pasos a seguir en forma compacta son:
+
+* 1.- Definir la función de densidad $f(x)$ que representa la variable a modelar
+* 2.- Calcular la función acumulada $F(x)$
+* 3.- Despejar la variable aleatoria x y obtener la función acumulada inversa $F^{-1}(x)$ 
+* 4.- Generar las variables aleatorias x, sustituyendo los valores con números aleatorios $r_{i}~U(0,1)$ en la función acumulada inversa.
+
+## Ejemplo de aplicación 
+
+La demanda de un producto X tiene un comportamiento uniforme entre 10000 y 15000
+unidades. Genere 10 variables aleatorias que simulen la demanda del producto X.
+
+Solución
+
+Primero debemos de identificar la transformada inversa de la distribución uniforme, para que sea nuestra función generadora:
+
+$$ x_{i}=a+(b-a)r_{i}$$
+Después generamos los números aleatorios pedidos en el ejercicio
+
+
+```{r}
+demanda<-function(n,a,b){
+ri<-runif(n, a,b)
+xi<-a+(b-a)*ri
+h<-hist(xi, main="Demanda Producto X", xlab="Unidades ", 
+     border="blue", ylab = 'Frecuencia', col="lightgreen")
+}
+demanda(10,10000,15000)
+```
+
+## Ejemplo de aplicación 2
+
+El tiempo de limpieza de una cabina telefónica tiene una distribución aproximadamente exponencial, con media 6 minutos. Simule el comportamiento de la variable aleatoria.
+
+Solución
+
+Identificamos que la tranformada inversa es 
+
+$$  x_{i}=-\frac{1}{\lambda}ln(1-r_{i})$$
+con $\mu=\frac{1}{\lambda}=6$
+
+```{r}
+clean<-function(n, m){
+  ri<-rexp(n, m)
+  xi<--m*log(1-ri)
+  h<-hist(xi, main="Limpieza de Cabinas Telefónicas", xlab="Tiempo (min)", 
+     border="blue", ylab = 'Frecuencia', col="darkorchid2")
+}
+clean(100,6)
+```
+## Ejercicio de práctica 
+
+Genera 100  números aleatorios unifomes entre 0 y 1. A partir de ellos simular:
+
+* a) Una variable aleatoria con distribución uniforme entre 3 y 4
+* b) Una variable aleatoria con distribución exponencial con $\mu=\frac{1}{\lambda}=5$
+* c) Una variable aleatoria con distribución de Weibull con forma uno y escala igual a dos.
+
+
+
+
+
+
+## Tarea  ##
+Dos distribuciones que tienen formas explícitas de la función de distribución acumulada a la distribución logística y la distribución Cauchy. Por lo tanto, están bien adaptadas a la transformación inversa método. Para cada uno de los siguientes, verifique la forma del cdf y luego genere 10000 variables aleatorias usando la transformación inversa y realiza un histograma respectivemente. Compara con las funciones de R incorporadas rlogis y rcauchy, respectivamente:
+
+La función de densidad logística es:
+
+$$f(x)=\frac{1}{\sigma}\frac{exp^{-\frac{(x-\mu)}{\sigma}}}{[1+\exp^{-\frac{(x-\mu)}{\sigma}}]^{2}}$$
+
+La distribución acumulada es: 
+
+$$F(X)= \frac{1}{1+e^{-\frac{(x-\mu)}{\sigma}}} $$
+Para la distribución de Cauchy:
+
+$$ f(x)=\frac{1}{\sigma\pi}\frac{1}{(1+(\frac{x-\mu}{\sigma})^{2})}$$
+La distribución acumulada es:
+
+$$F(x)=\frac{1}{2}+\frac{1}{\pi}arctan((x-\mu)/\sigma)  $$
+
+## Método de la tranformada inversa para variables discretas
+
+Paso 1
+
+Calcular los valores de $p(x)$ para la distribución propuesta.
+
+Paso 2
+
+Calcular la función acumulada $F(x)$ para cada valor de $x$
+
+Paso 3
+
+Generar $r_{i}$. Verificar en $F(x)$ a qué intervalo de $x$ pertenece y ese número aleatorio generado por la distribución.
+
+Una variable aleatoria es una función que asigna un valor numérico, al 
+resultado de un experimento aleatorio
+
+## Calculo del número de óptimo de simulaciones 
+El tamaño de una corrida de simulación depende principalmente del tipo
+de distribución que se intenta simular y, por decirlo de alguna forma, 
+de la bondad del generador de números $U(0,1)$ que se está utilizando 
+y de las condiciones iniciales con que se inicio la simulación del sistema 
+
+La expresión general para calcular el número óptimo de simulaciones es la siguiente:
+
+
+$$n=\frac{\sigma^{2}(z_{\frac{\alpha}{2}})}{k^{2}}  $$
+
+donde:
+
+$z=$ Estadístico normal estándar para cierta $\alpha$
+$k=$ Desviación absoluta máxima permitida sobre la media de la distribución
+a simular
+$\sigma^{2}=$ Varianza de la distribución a simular
+
+
+Cuando la media y la varianza de la distribución a simular se obtuvieron 
+de una población $n_{1}$ de 30 o menos elementos, entonces el calculo óptimo de las simulaciones se modifica de acurdo con la siguiente ecuación:
+
+
+$$ n=\frac{s^{2}(t_{n_{1}-1,\frac{\alpha}{2}})^{2}}{k^{2}}  $$
+
+Donde:
+
+$t=$ Estadístico de la distribución de la t student
+$k=$ Desviación absoluta máxima permitida sobre la media de la distribución a simular
+$S^{2}=$ Estimador de la varianza de la distribución a simular
+
+ También se le conoce cóm prueba piloto, se pueden usar ambas formulas siempre y cuando se use una distribución normal.
+ 
+ En caso de que los datos analizados sigan otra distribución 
+ se debe de usar el Teorema de Tchebycheff
+ 
+ 
+ 
+  $$ n=\frac{m^{2}}{\alpha}$$
+  donde:
+  
+  $\alpha=$ Probabilidad de error permitida
+  $\frac{1}{m}=$ Número de desviaciones estándar méximo permitido 
+  sobre la media de la distribución a simular
+  
+  
+  ## Ejemplo.
+  
+  Se desea encontrar el número de simulaciones que debe realizar un simulador de desperdicios de una planta de poliéster, de tal forma que el promedio diario simulado de desperdicio no difiera más de $\pm 0.166\sigma$
+  de su valor real, con una confiabilidad del $95\%$ 
+  
+  Suponiendo que el desperdicio diario en toneladas sigue una distribución normal, entonce el número de simulaciones óptimo es:
+  
+  
+  $$ n=\frac{s^{2}(t_{n_{1}-1,\frac{\alpha}{2}})^{2}}{k^{2}}  $$
+  
+  donde:
+  
+  
+  $z=1.96$ para una confiabiliadad del $95\%$
+  $k=0.166\sigma$
+  
+  
+  Sustituyendo la información se tiene 
+  
+  
+  $$n=138.9$$
+  Si no sabemos o no se tiene idea de la distribución de probabilidad, se utiliza la siguiente expresión 
+  
+  
+  $$n=\frac{m^{2}}{\alpha}=\frac{36}{0.05}=720 $$
+  ## Calculo del número de replicas 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+## Resumen para distribuciones continuas para generar variables aleatorias
+
+
+
+$$ $$
+
+
+
+
+
+
+
+
+
+
+## Ejercicio de Repaso 
+
+Genera una secuencia de 50 números aleatorios y realiza las siguientes pruebas con un nivel de confianza del 95$\%$
+
+##  Prueba de bondad de ajuste $\chi^{2}$
+Para la pruba de medias se tien la siguiente formula 
+
+$$ C=\sum_{i=1}^{n}\frac{(FE_{i}-FO_{i})^2}{FE_{i}}$$
+```{r}
+x<-c(0.03991,0.10461,0.93716,0.16894,0.98953,0.73231,
+     0.25593,0.34565,0.02345,0.67347,0.10987,0.25678,
+     0.71890,0.61234,0.86322,0.94134,0.99872,0.27657,
+     0.82324,0.12387,0.05389,0.82474,0.59289,0.36782,
+     0.72484,0.48999,0.50502,0.39528,0.36782,0.90234)
+```
+
+
+Necesitamos encontrar FE y FO para poder calcular el valor de C y comparar
+con el valor esperado de la tabla $\chi^{2}$ 
+
+*Lo primero que se hace es calcular las frecuencias observadas, esto se hace mediante un histograma de frecuencias.
+
+```{r}
+h<-hist(x)
+FO<-as.numeric(h$counts)
+
+```
+Con base al histograma se propone una distribución uniforme para poder encontrar las frecuencias observadas FE y buscando la función de distribución en la literatura se tiene que: 
+$$ F(X)=\frac{x_{i}-a}{b-a} $$
+
+```{r}
+a<-0
+b<-1
+int<-c(0.0, 0.2, 0.4, 0.6, 0.8 ,1.0)
+FX=0.2
+FE<-FX*length(x)
+t<-cbind(int, 0.2, FE)
+
+```
+Ahora que tenemos la frecuencia esperada y la frecuencia observada calculamos el valor de chi para wl 95$\%$ de confiabilidad un 29 grados de libertad
+
+```{r}
+
+C<-sum((FE-FO)^{2}/(FE))
+if(C<=qchisq(0.95,29)){cat("Se Acepta la Hipótesis :p")}else{cat("Se Rechaza la Hipótesis")}
+
+ks.test(x,"punif")
+
+```
+
+
+##  Prueba de bondad de ajuste Kolmogorov-Smirnov
+Para la prueba de KS aw procede a calcular las siguientes relaciones
+
+* FO 
+* FOA
+* PO
+* POA
+* PAE=FX(LS) donde LS es el límite superior
+
+$$ F(x)=\int_{0}^{LS}dx$$
+Resulta
+
+$$F(X)=x |_{0}^{LS}   $$
+
+```{r}
+h<-hist(x)
+FO<-as.numeric(h$counts)
+FOA<-cumsum(FO)
+PO<-FO/length(x)
+POA<-cumsum(PO)
+LS<-seq(0.2,1,by=0.2)
+FX<-LS
+PAE<-FX*LS
+DM<-abs(PAE-POA)
+tabla<-cbind(LS,FO,FOA,PO,POA, FX, PAE, DM)
+
+
+
+```
+Ahora selecciono el valor de una muestra de 30 y un 95$\%$
+de nivel de confianza se tiene que 0.24170. Comparando con el máximo se concluye que no se acepta la hipótesis
+
+
+
+##  Prueba de medias
+```{r}
+mean(x)
+n<-length(x) 
+lsx<-1/2+1.96*(1/(12*sqrt(n)))          #con z_{alpha/2}=1.96 
+lix<-1/2-1.96*(1/(12*sqrt(n)))
+pm<-c(lix,mean(x), lsx)
+if(lix<=mean(x) & lsx>=mean(x)){cat("Se Acepta la Hipótesis :p")}else{cat("Se Rechaza la Hipótesis")}
+```
+##  Prueba de Varianza
+
+```{r}
+n<-length(x)
+var(x)
+lsv<- 45.7/(12*(n-1))  #chi cuadrada con 0.025  y gl=29
+liv<- 16.4/(12*(n-1))  #chi cuadrada con 0.975 y gl=29
+pv<-c(liv, var(x), lsv);pv
+if(liv<=var(x) & lsv>=var(x)){cat("Se Acepta la Hipótesis")} else{cat("Se Rechaza la Hipótesis")}
+```
+##  Prueba de uniformidad
+```{r}
+h<-hist(x, breaks = 10)
+FO<-h$counts
+FO<-as.numeric(FO)
+h$breaks
+bin<-c('0.0-0.1','0.1,0.2','0.2-0.3','0.3-0.4','0.4-0.5','0.5-0.6',
+       '0.6-0.7','0.7,0.8','0.8,0.9','0.9-1.0')
+n<-length(x)
+a<-0
+b<-10
+FE<-(n-a)/(b-a) 
+C<-(FE-FO)^2/FE
+tabla<-cbind(bin,FO, FE, C)
+C<-sum(C)
+chi2<-qchisq(0.95,29)
+if(C<=chi2){cat("Se Acepta la Hipótesis")} else{cat("Se Rechaza la Hipótesis")}
+```
+##  Prueba de independencia póker
+
+```{r}
+dif<-0.3024 #Todos los números diferentes
+par<-0.504 # Un par de números iguales
+dospar<-0.108 # Dos  números iguales
+ter<-0.072  # Salga tres números iguales
+full<-0.009  # Tres de un mismo número y un par de otros
+poker<-0.0045 # Cuatro números iguales
+qui<-0.0001 #Todos los números sean iguales
+
+Probabilidades<-c("Diferente","Par","Dospares","Tercia","Full","P?ker","Quintilla")
+PE<-c(dif,par,dospar,ter,full,poker,qui)
+n<-length(x)
+FE<-PE*n
+FO<-c(14,15,1,1,0,0,0) # Falta Calcular FO
+C<-(FE-FO)^2/FE
+tablas<-cbind(Probabilidades,FO,FE, C)
+C<-sum(C)
+chi2<-qchisq(0.95,6)
+if(C<=chi2){cat("Se Acepta la Hipótesis")} else{cat("Se Rechaza la Hipótesis")}
+```
+
+##  Prueba de independencia de corridas arriba y abajo
+
+
+##  Prueba de independencia arriba y abajo de la media
+```{r}
+med<-0.5  ### Por prueba de medias
+#med<-mean(x) ### Realizar la prueba tomando en cuenta la media de 
+# los datos 
+#### Paso 1
+#### Calcular los los valores de de la manera siguiente
+#### Si r_{i}<=0.5  -> 0
+#### Si r_{i}>0.5  -> 1
+r<-c(length(x))
+for (i in 1:length(x)) {
+    if(x[i]<=0.5)
+    {
+        r[i]<-'0'    
+    }     
+    else{
+        r[i]<-'1'
+    }
+    
+}
+r
+#### Paso 2 ####
+#### Calculamos el n?mero de corridas h
+#### Una corrida son las sucesiones de cero y de uno existentes
+#### en la serie
+plot(r) # Esto es m?s f?cil que contar
+####
+####O se puede hacer el conteo de ceros las series de manera manual
+h<-4
+#### Paso 3
+#### Calcular  E(h) y V(h) con las siguientes expresiones
+#### Con n0= al n?mero de ceros existentes en la serie
+#### Con n1= al n?mero de unos existentes en la serie
+#### Con n= al n?mero de datos existentes en la serie
+#### Del grafico o conteo podemos saber que
+n0<-7
+n1<-13
+n<-n0+n1
+Eh<-(2*n0*n1/n)+1/2
+Vh<-(2*n0*n1*(2*n0*n1-n))/(n^{2}*(n-1))
+
+
+#### Paso 4 
+#### Una vez calculados E(h), V(h) y h se calcula el z observado
+#### con la siguiente expresi?n 
+
+zo<-abs((h-Eh)/(sqrt(Vh)))
+
+####Paso 5 
+#### Ahora se hace el comparativo para saber si la hip?tesis 
+#### es aceptada 
+z1=qnorm(0.95)
+if(zo<=z1){cat("Se Acepta la Hip?tesis")} else{cat("Se Rechaza la Hip?tesis")}
+
+```
+
+
+##  Prueba de independencia de huecos
+```{r}
+#### Paso 1
+
+#### Seleccionar un alpha y beta para poder realizar por 
+####
+
+alpha<-0.3 # min()
+beta<-0.8   #max()  0.5
+#### Paso 2 se clasifican los n?meros seg?n el intervalos seleccionado
+#### los que est?n dentro del intervalo seleccionado se le pone un
+#### 1 y los que este por abajo o arriba se les pone un 0 ####
+
+d<-c(length(x))
+for(i in 1:length(x)){
+    if(x[i]>alpha& x[i]<beta){
+        d[i]<-'1'
+    }
+        else{ 
+        d[i]<-'0'
+    }
+}
+d
+#### Paso 3 ####
+#### Ahora debemos clasificar el orden o tama?o de hueco
+#### 11 es un hueco de orden 0
+#### 101  es un hueco de orden 1
+#### 1001 es un hueco de orden 2 
+#### Calcular la frecuencia observada de los huecos
+hueco<-c(0,1,2,3,4,5,6,7)
+FO<-c(6,2,0,0,1,1,0,1)
+tabla<-cbind(hueco, FO)
+#### Paso 4 ####
+#### Calcular el n?mero de corridas observadas h, una corrida se forma por ceros 
+#### y unos consecutivos y se clasifican seg?n el n?mero de ceros  
+ h<-sum(FO)
+#### El n?mero h=11
+
+#### Paso 5  
+#### Se calcula la frecuencia esperada (FE_{i})
+####
+FE<-c(length(hueco))
+ for(i in 0:length(hueco)){
+FE[i]<-h*(beta-alpha)*(1-(beta-alpha))^{i-1}
+}
+FE<-sum(FE)
+
+C<-sum((FE-FO)^{2}/FE)
+chi2<-qchisq(0.95,6)
+if(C<=chi2){cat("Se Acepta la Hipótesis")} else{cat("Se Rechaza la Hipótesis")}
+
+
+
+```
+
+##  Prueba de series
+```{r}
+a<-c(length(x))
+b<-c(length(x))
+mq<-matrix(x,nrow=length(x),ncol=1)
+for (i in 1:length(x)-1) {
+    a[i]<- mq[i]
+    b[i]<-mq[i+1]
+}
+pares<-cbind(a,b)
+View(pares)
+plot(a,b, ylim = c(0,1), xlim = c(0,1))
+grid(4, 4,lty = 6, col = "cornsilk2")
+
+##### Del grafico se puede obtener lo siguiente 
+#-----------------
+#|   |   |   |   |
+#| 3 | 2 | 1 | 2 |
+#|   |   |   |   |
+#-----------------
+#|   |   |   |   |
+#| 1 | 1 | 1 | 3 |
+#|   |   |   |   |
+#-----------------
+#|   |   |   |   |
+#| 1 | 3 | 3 | 1 |
+#|   |   |   |   |
+#-----------------
+#|   |   |   |   |
+#| 2 | 2 | 1 | 2 |
+#|   |   |   |   |
+#----------------- 
+conteo<-c(3,2,1,2,1,1,1,3,1,3,3,1,2,2,1,2)
+#### Paso 2 ####
+#### Calcular la frecuencia esperada en cada casilla de FE_{i} de acuerdo con 
+#### FE_{i}=n?m/m donde n?m es el n?mero total de parejas ordenadas 
+#### m es el n?mero de cuadrantes 4x4=16
+FE<-length(x)/16
+#### De la gr?fica podemos definir como 
+#tabla_serie<-cbind(conteo, FO, c(FE, FE, FE))
+#View(tabla_serie)
+#### Paso 3 
+#### Calculamos el valor de C con la formula de chi^{2} y si  
+#### C<=chi^{2} aceptamos o rechazamos la hip?tesis de series
+C<-c()
+for(i in 1:length(conteo)){
+C[i]<-sum(FE-conteo[i])^{2}/FE
+}
+C<-sum(C)
+#El valor de chi2 con un 95% de confianza y con 15 grados de libertad
+chi2<-qchisq(0.95,15)
+if(C<=chi2){cat("Se Acepta la Hip?tesis")} else{cat("Se Rechaza la Hip?tesis")}
+```
+
+
+
+## Ejercicio de repaso
+
+Genere 100 números aleatorios utilizando la función de números aleatorios
+de tu lenguaje de programación preferido  para las siguientes distribuciones de probabilidad:
+
+a) Normal ($\mu=10, \sigma=4$)
+b) Weibull ($\gamma=100, \beta=20,\alpha=2$)
+c) Exponencial($\alpha=15$)
+d) Triangular($a=10, b=15, c=18$)
+
+Calcule para cada caso, la media la varianza, el histograma y determine si los números generados son los adecuados.
+
+
+
+
+## Simulación de Variables discretas
+
+Recordemos que para usar estos métodos debemos de tener números 
+aleatorios confiables. El método de inversión para variables aleatorias
+se realiza de la manera siguiente:
+
+1.- Genera un número aleatorio $r_{i}$, tal que $r_{i}\epsilon (0,1)$
+ si $r_{i}<p_{0}$ se define $R=r_{o}$ y para.
+ si $r_{i}<p_{0}+p_{1}$ se define $R=r_{1}$ y para.
+ si $r_{i}<p_{0}+p_{1}+p_{2}$ se define $R=r_{2}$ y para.
+ ...
+ ...
+ ...
+2.- Si las $x_{i}$ están ordenadas de tal manera que $x_{o}<x_{x1}<x_{2}<...$ y si denotamos la función de distribución acumulada de R, entonces $P(x_{k})=\sum_{i=0}^{k}p_{i}$ por tanto R 
+será igual a $x_{j}$si
+
+$$P(x_{j-1})\leq r_{i}\leq P(x_{j})  $$
+En otras palabras, tras generar un número aleatorio $r_{i}$ determinamos el valor de R encontrando el intervalo $[P(x)_{j-1},P(x_{j})$ en el que cae $r_{i}$, esto equivale a encontrar la inversa de $P(r_{i})$
+
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im16.png)
+

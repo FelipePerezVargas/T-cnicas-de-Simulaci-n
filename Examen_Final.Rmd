@@ -1,0 +1,96 @@
+---
+title: "Examen Final de Técnicas de Simulación"
+author: "Felipe Pérez Vargas"
+date: "8/12/2020"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1.- **(1 punto)** Un promedio de 10 automóviles por hora llegan a un cajero con un solo servidor que proporciona servicio sin que uno descienda del automóvil. Suponga que el tempo de servicio promedio por cada cliente es 4 minutos, y que tanto los tempos entre llegadas y los tempos de servicios son exponenciales. Conteste las preguntas
+siguientes:
+
+a. ¿Cuál es la probabilidad que el cajero esté ocioso?
+
+b. ¿Cuál es el número promedio de automóviles que están en la cola del cajero? (se considera que un automóvil que está siendo atendido no está en la cola esperando)
+
+c. ¿Cuál es la cantdad promedio de tempo que un cliente pasa en el
+estacionamiento del banco, (incluyendo el tempo de servicio)?
+
+d. ¿Cuántos clientes atenderá en promedio el cajero por hora?
+
+2.- **(1 punto)** Un lavacarros puede atender un auto cada 5 minutos y la tasa media de llegadas es de 9 autos por hora. Obtenga las medidas de desempeño de acuerdo con el modelo $M/M/1$. Además la probabilidad de tener 0 clientes en el sistema, la probabilidad de tener una cola de más de 3 clientes y la probabilidad de esperar más de 30 minutos en la cola y en el sistema.
+
+3.- **(1.5 punto)** Basado en la siguiente distribución de retornos calcula:
+
+
+|Prob  |$R_{A}$ |$R_{B}$|$R_{C}$|$R_{D}$|$R_{E}$|$R_{F}$|
+|----- |--------|-------|-------|-------|-------|-------|
+|15$\%$|12$\%$  |12$\%$ | 5$\%$ |12$\%$ |10$\%$ |16$\%$ |
+|15$\%$| 7$\%$  | 7$\%$ |-8$\%$ |-7$\%$ | 9$\%$ |11$\%$ |
+|20$\%$| 4$\%$  |13$\%$ | 7$\%$ |15$\%$ | 5$\%$ |-9$\%$ |
+|30$\%$|12$\%$  | 6$\%$ |-2$\%$ |19$\%$ | 6$\%$ |-6$\%$ |
+|10$\%$|10$\%$  |-9$\%$ |-9$\%$ |-3$\%$ |11$\%$ |15$\%$ |
+|10$\%$|30$\%$  |-2$\%$ |21$\%$ |-7$\%$ | 5$\%$ |19$\%$ |
+
+* Retornos esperados.
+* Desviación estándar.
+* Realiza un grafico retorno vs volatilidad.
+* Menciona cual activo tiene mayor riesgo y cual tiene mejor rendimiento.
+
+4.- **(1.5 punto)** Con la tabla anterior contesta lo siguiente:
+
+* Arma un portafolio de inversión con  los activos A, B, E y F.
+* Calcula el rendimiento y la volatilidad del portafolio considerando el mismo pero para cada uno de los activos.
+* Optimiza el portafolio usando la función solver en excel.
+
+
+
+5.- **(2 punto)** Descarga los precios históricos de los últimos cinco años al día de hoy de las siguientes acciones 'CX', 'TV' 'AMX', 'PFE', 'STZ' y 'ORCL' y realiza:
+
+* Graficas precios históricos donde esten las acciones juntas
+* Graficas de rendimientos históricos
+* Realiza un tabla con los rendimientos  y la volatilidad
+* Grafica volatilidad vs rendmiento esperado
+* Calcula la matriz de Varianza y Covarianza
+* Calcula la correlación del portafolio 
+* Optimiza el portafolio 
+* ¿Cuál es el rendimiento del portafolio optimizado?
+* ¿Cuál es el riesgo del portafolio?
+* Quitando la acción de menor peso ¿Cuál es el rendimiento y el riesgo del portafolio?
+
+
+6.- **(1.5 punto)** Para tres de las acciones del ejercicio 5 y realiza las siguientes pruebas
+
+
+* Prueba de asimtería 
+* Prueba de Kurtosis 
+* Prueba de normalidad Jerque-Bera 
+
+7.- **(1.5 punto)** Calcula el valor en riesgo (VaR) y Expected Shortfall (ES) para tres acciones con un 95 $\%$ de confianza usando los siguientes métodos:
+
+* Calcula los retornos esperados y grafica tiempo vs retornos. 
+* Usando la formula para el VaR y ES y realiza el graficos.
+* Considerando que el comportamiento es normal  y realiza el grafico.
+* Considerando que no tiene comportamiento normal y realiza el grafico.
+* Realiza un tabla y un grafico VaR vs ES. 
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+

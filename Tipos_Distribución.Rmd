@@ -1,0 +1,84 @@
+---
+title: "Modelación a partir de distribuciones de probabilidad"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introducción
+
+Una distribución de probabilidad es un modelo matemático que se utiliza para representar fenómenos aleatorios estacionarios, con realizaciones independientes y en el cual, las variables aleatorias que sirven para representar el fenómeno aleatorio bajo estudio que no aparecen como función del tiempo.
+
+A continuación se presentan algunos de los modelos más populares para distribuciones de probabilidad
+de una variable. 
+
+## Tipos de paramétros
+
+![Parámetro de localización de un modelo para distribución de probabilidad](im17.png)
+
+
+![Parámetro de escala de un modelo para
+distribución de probabilidad](im18.png)
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im19.png)
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im20.png)
+
+## Características de los Modelos
+
+Además del valor medio y la varianza existen otras medidas para caracterizar los modelos para distribuciones de probabilidad. Entre estas se incluyen la mediana, la moda y los coeficientes de variación, asimetría y afilamiento.
+
+El valor esperado, la mediana y la moda se denominan medidas de “tendencia central” pues dan un pronóstico de la localización en el eje x de la distribución como un todo.
+
+La varianza, la desviación estándar y el coeficiente de variación son medidas de la dispersión con respecto al valor esperado.
+
+Los coeficientes de asimetría y de afilamiento indican la forma de la función.
+
+* Mediana
+* Moda
+* Valor medio
+* Varianza
+* Desviación estándar 
+
+
+
+## Momentos centrales
+
+Para variables aleatorias continuas.
+
+$$m_{r}=E[(X-E(x))^{r}]=\int_{-\infty}^{\infty}[x-E(x)]^{r}f(x)dx $$
+Para variables aleatorias discretas
+
+$$m_{r}=E[(X-E(x))^{r}]=\int_{-\infty}^{\infty}[x-E(x)]^{r}p(x)dx $$
+
+|r|Descripción|
+
+
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im17.png)
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im17.png)
+
+
+
+
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -1,0 +1,41 @@
+---
+title: "Riesgo"
+author: "Felipe Pérez Vargas"
+date: "13/11/2020"
+output: html_document
+---
+
+Retornos
+
+$$ R_{i}=\frac{\Delta Valor}{Valor inicial}$$
+$$  R_{i}=ln(\frac{P_{t}}{P_{t-1}})$$
+
+Rendimiento de un portafolio
+
+
+$$ R_{p}=\sum_{i=1}^{n}w_{i}R_{i}$$
+Retorno Geométrico medio
+
+$$(1+r_{g})=[(1+r_{1})(1+r_{2})...(1+r_{n})]^{\frac{1}{n}}  $$
+
+
+Retorno aritmetico
+
+
+$$ r_{a}=\frac{r_{1}+r_{2}+...+r_{n}}{n}$$
+
+
+Retorno esperado 
+
+
+$$E(R_{x})=\sum_{i=1}^{n}R_{i}P(R_{i})   $$
+
+
+Desviación estándar 
+
+
+$$ \sigma=\sqrt(\sum_{i=1}^{n}{[R_{i}-E(R_{i})]^{2}*P_{i}})$$
+
+
+
+

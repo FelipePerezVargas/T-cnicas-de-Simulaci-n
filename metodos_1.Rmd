@@ -1,0 +1,311 @@
+---
+title: "Modelación a partir de distribuciones de probabilidad"
+author: "Felipe Pérez Vargas"
+date: "16/10/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Calculo del número de óptimo de simulaciones 
+
+El tamaño de una corrida de simulación depende principalmente del tipo
+de distribución que se intenta simular y, por decirlo de alguna forma, 
+de la bondad del generador de números $U(0,1)$ que se está utilizando 
+y de las condiciones iniciales con que se inicio la simulación del sistema 
+
+La expresión general para calcular el número óptimo de simulaciones es la siguiente:
+
+
+$$n=\frac{\sigma^{2}(z_{\frac{\alpha}{2}})}{k^{2}}  $$
+
+donde:
+
+$z=$ Estadístico normal estándar para cierta $\alpha$
+$k=$ Desviación absoluta máxima permitida sobre la media de la distribución
+a simular
+$\sigma^{2}=$ Varianza de la distribución a simular
+
+
+Cuando la media y la varianza de la distribución a simular se obtuvieron 
+de una población $n_{1}$ de 30 o menos elementos, entonces el calculo óptimo de las simulaciones se modifica de acurdo con la siguiente ecuación:
+
+
+$$ n=\frac{s^{2}(t_{n_{1}-1,\frac{\alpha}{2}})^{2}}{k^{2}}  $$
+
+Donde:
+
+$t=$ Estadístico de la distribución de la t student
+$k=$ Desviación absoluta máxima permitida sobre la media de la distribución a simular
+$S^{2}=$ Estimador de la varianza de la distribución a simular
+
+ También se le conoce cóm prueba piloto, se pueden usar ambas formulas siempre y cuando se use una distribución normal.
+ 
+ En caso de que los datos analizados sigan otra distribución 
+ se debe de usar el Teorema de Tchebycheff
+ 
+ 
+ 
+  $$ n=\frac{m^{2}}{\alpha}$$
+  donde:
+  
+  $\alpha=$ Probabilidad de error permitida
+  $\frac{1}{m}=$ Número de desviaciones estándar méximo permitido 
+  sobre la media de la distribución a simular
+  
+ ## Ejemplo 
+ 
+  
+  Se desea encontrar el número de simulaciones que debe realizar un simulador de desperdicios de una planta de poliéster, de tal forma que el promedio diario simulado de desperdicio no difiera más de $\pm 0.166\sigma$
+  de su valor real, con una confiabilidad del $95\%$ 
+  
+  Suponiendo que el desperdicio diario en toneladas sigue una distribución normal, entonce el número de simulaciones óptimo es:
+  
+  
+  $$ n=\frac{s^{2}(t_{n_{1}-1,\frac{\alpha}{2}})^{2}}{k^{2}}  $$
+  
+  donde:
+  
+  
+  $z=1.96$ para una confiabiliadad del $95\%$
+  $k=0.166\sigma$
+  
+  
+  Sustituyendo la información se tiene 
+  
+  
+  $$n=138.9$$
+  
+  Si no sabemos o no se tiene idea de la distribución de probabilidad, se utiliza la siguiente expresión 
+  
+  
+  $$n=\frac{m^{2}}{\alpha}=\frac{36}{0.05}=720 $$
+  
+## Validación de resultados
+
+Al usar la simulación para estudiar un sistema complejo, encontraremos varios errores como:
+
+* Errores de diseño
+* Errores en la programación 
+* Errores en los datos utilizados
+* Errores en el uso del modelo 
+* Errores en la interpretación de los resultados
+
+Evaluar un modelo significa desarrollar un nivel aceptable de confianza. La validación y verificación es una de las tareas más importantes y dificiles 
+que enfrenta la persona que realiza las simulaciones
+
+* La verificación se refiere a la comparación del modelo conceptual con el código que se genero por lo que se debe de contestar las siguientes preguntas ¿está correcta la codificación?,¿Son correctas las entradas de datos y la estructura lógica del código?
+
+* Validación Es la demostración de que el modelo realmente es una representación fiel de la realidad. por lo regular este proceso se lleva a cabo a través de un proceso comparativo.
+
+En el proceso de validación usualmente se emplean las pruebas siguientes 
+
+
+* Prueba de estimación de parametros de la población asumiendo una distribución de probabilidad (F, t y z)
+
+* Pruebas de las estimaciones de los parámetros de la población que no son dependientes de la suposición de una población implicita
+
+* Prueba para determinar la distribución de probabilidad de la cual proviene la muestra (pruebas de bondad de ajuste)
+
+
+  
+  
+  
+  
+
+
+
+## Introducción
+
+Una distribución de probabilidad es un modelo matemático que se utiliza para representar fenómenos aleatorios estacionarios, con realizaciones independientes y en el cual, las variables aleatorias que sirven para representar el fenómeno aleatorio bajo estudio que no aparecen como función del tiempo.
+
+A continuación se presentan algunos de los modelos más populares para distribuciones de probabilidad
+de una variable. 
+
+## Tipos de paramétros
+
+![Parámetro de localización de un modelo para distribución de probabilidad](im17.png)
+
+![Parámetro de escala de un modelo para
+distribución de probabilidad](im18.png)
+
+![Parámetro de forma de un modelo para
+distribución de probabilidad](im19.png)
+
+![Parámetro de desplazamiento de un
+modelo para distribución de probabilidad](im20.png)
+
+## Características de los Modelos
+
+Además del valor medio y la varianza existen otras medidas para caracterizar los modelos para distribuciones de probabilidad. Entre estas se incluyen la mediana, la moda y los coeficientes de variación, asimetría y afilamiento.
+
+El valor esperado, la mediana y la moda se denominan medidas de “tendencia central” pues dan un pronóstico de la localización en el eje x de la distribución como un todo.
+
+La varianza, la desviación estándar y el coeficiente de variación son medidas de la dispersión con respecto al valor esperado.
+
+Los coeficientes de asimetría y de afilamiento indican la forma de la función.
+
+* Mediana
+* Moda
+* Valor medio
+* Varianza
+* Desviación estándar 
+
+
+
+## Momentos centrales
+
+Para variables aleatorias continuas.
+
+$$m_{r}=E[(X-E(x))^{r}]=\int_{-\infty}^{\infty}[x-E(x)]^{r}f(x)dx $$
+
+Para variables aleatorias discretas.
+
+$$m_{r}=E[(X-E(x))^{r}]=\int_{-\infty}^{\infty}[x-E(x)]^{r}p(x)dx $$
+Coeficiente de variación 
+
+$$ cv=\frac{STD(x)}{E(x)}*100\%  $$
+Mide la dispersión central de la distribución. Permite comparar varias distribuciones, aunque las unidades de las variables aleatorias no sean las mismas.
+
+
+Coeficiente de asimetría 
+
+
+$$ ca=\frac{m_{3}}{[STD(x)]^{3}} $$
+
+
+
+
+![Coeficiente de asimetría para varias distribuciones](im21.png)
+
+
+Coeficiente de afilamiento
+
+
+$$  cp=\frac{m_{4}}{[STD(x)]^{4}}$$
+Mide el afilamiento o cantidad de “pico” (peakness) de la distribución.
+
+
+
+## Ejercicios de distribuciones 
+
+
+Distribución exponencial 
+
+Ejemplo de la distribución exponencial:
+
+* Confiabilidad: Modelo de vida de componentes en periodo de vida útil
+* Teoría de colas: Tiempo entre llegada de llamadas a un conmutador o clientes a un banco, tiempo para servicio.
+
+
+Distribución Uniforme
+
+Algunas aplicaciones
+
+* Generación de números aleatorios uniformes
+* Tiempo para llegada de eventos en un proceso de Poisson homogéneo
+* Teoría de colas: Tiempo para llegada de llamadas a un conmutador o clientes a un banco
+* Fugas en una tubería
+
+Distribución normal o gaussina
+
+ Algunas aplicaciones
+
+* Estudio de errores de varios tipos
+* Variables que resultan de la suma de grandes cantidades de otras cosas
+* Sobrevoltajes, voltajes de aguante de aislamientos
+* Altura de las personas, inflación, tasas de reproducción
+
+Distribución Weibull
+
+Algunas aplicaciones
+
+* Tiempos para falla
+* Tiempo para completar algún trabajo
+* Estudio de fatiga de materiales
+* Modelación de componentes en confiabilidad
+
+
+Distribución gamma
+
+Algunas aplicaciones
+
+* Tiempos para falla
+* Tiempo para completar algún trabajo: reparación, atención de clientes
+* Fenómenos metereológicos
+
+
+Distribución de Pareto
+
+* Algunas aplicaciones
+* Economía: tamaño de compañías, precio de acciones
+* Demografía: Tamaño de poblaciones de ciudades
+* Confiabilidad
+
+Distribución triangular
+
+Algunas aplicaciones
+
+* Modelos aproximados en ausencia de datos
+
+
+Distribución Beta
+
+Algunas aplicaciones
+
+* Para modelar proporciones
+* Modelos en ausencia de datos
+
+
+Distribución Lognormal
+
+
+Algunas aplicaciones
+
+* Tiempos para ejecutar una tarea
+* Tiempos para reparación
+* Tiempos para prestar un servicio
+
+Distribución logística 
+
+Algunas aplicaciones
+
+* Tiempos para aprendizaje
+* Crecimiento de poblaciones
+* Propagación de epidemias
+* Difusión de las ventas de un nuevo producto
+* Difusión de nuevas tecnologías en el mercado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# **Ejercicio 1**
+
+
+
+
+Una cuadrilla que realiza mantenimiento preventivo a los circuitos primarios de distribución aéreos debe localizar los puntos donde hay acercamientos entre los árboles y las fases de los circuitos primarios para hacer poda.
+
+
+
+
+![Método Grafico de la Tranformación Inversa para distribuciones continuas](im17.png)
+
+

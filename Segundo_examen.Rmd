@@ -1,0 +1,65 @@
+---
+title: "Segundo Examen"
+author: "Felipe Pérez Vargas"
+date: "23/10/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1.- Genera 20 números aleatorios usando el métodos congruencial con los siguientes 
+valores $r_{O}=88$, $a=525$, $c=13$, $m=957$, una vez generados los valores realiza la prueba de bondad de ajuste $\chi^{2}$ y prueba de medias y varianza.
+
+
+2.- Genera 20 números aleatorios usando el método de cuadrados medios con la semilla 867, una vez realiza la prueba de bondad de ajuste Kolmogorov-Smirnov, la prueba de media y de varianza.
+
+3.- Junta los números aleatorios generados por las dos técnicas y calcula las siguientes pruebas
+
+* Prueba de uniformidad
+* Prueba de póker
+* Prueba de huecos
+* Prueba de corridas arriba y abajo 
+* Prueba de series 
+* Prueba de Corrida Arriba-Abajo de la media
+
+
+4.- Dos distribuciones que tienen formas explícitas de la función de distribución acumulada a la distribución logística y la distribución Cauchy. Por lo tanto, están bien adaptadas a la transformación inversa método. Para cada uno de los siguientes, verifique la forma del cdf y luego genere 10000 variables aleatorias usando la transformación inversa y realiza un histograma respectivemente. Compara con las funciones de R incorporadas rlogis y rcauchy, respectivamente:
+
+La función de densidad logística es:
+
+$$f(x)=\frac{1}{\sigma}\frac{exp^{-\frac{(x-\mu)}{\sigma}}}{[1+\exp^{-\frac{(x-\mu)}{\sigma}}]^{2}}$$
+
+La distribución acumulada es: 
+
+$$F(X)= \frac{1}{1+e^{-\frac{(x-\mu)}{\sigma}}} $$
+Para la distribución de Cauchy:
+
+$$ f(x)=\frac{1}{\sigma\pi}\frac{1}{(1+(\frac{x-\mu}{\sigma})^{2})}$$
+La distribución acumulada es:
+
+$$F(x)=\frac{1}{2}+\frac{1}{\pi}arctan((x-\mu)/\sigma)  $$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+

@@ -1,0 +1,210 @@
+---
+title: "Guía de Examen"
+author: "Felipe Pérez Vargas"
+date: "20/10/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Métodos de generación de números aleatorios 
+
+
+Métodos congruencial
+
+$$ r_{i+1}=(a+cr_{i})mod(m)  $$
+$$r_{i+1}=\frac{r_{i+1}}{m-1}  $$
+Donde:
+$r_{o}=$ Semilla del generador
+a,c,m son constantes 
+
+## Ejemplo 1
+
+Genre 5 números aleatorios con el generador congruencial con los siguientes 
+valores $r_{O}=37$, $a=327$, $c=17$, $m=557$
+
+## Métodos de cuadrados medios
+
+El procedimiento de obtención de números con este tipo de generadores es el siguiente:
+
+* Generar una semilla
+* Elevarla al cuadrado
+* Tomar parte central del conjunto de k dígitos que formaran el número aleatorio
+* Los k dígitos pesarán a ser la nueva semilla con el fin de repetir en proceso n ocasiones
+
+
+## Ejemplo 1
+
+Genera 10 número aleatorios usando el método de cuadrados medios 
+utilizando como semilla 666
+
+
+# Tipos de distribución 
+
+![Tipos de distribución](im22.png)
+
+Para cada uno de los tipos de distribución se debe de conocer lo siguiente:
+
+* La función de densidad
+* Distribución acumulada
+* Parámetros de escala, de forma, de localización, media, varianza, etc. 
+
+Para realizar los gráficos correspondientes
+
+
+
+## Pruebas de medias  y pruebas de varianza 
+
+
+## Ejemplo 3
+ Haga la prueba de medias y de varianza a los siguientes números aleatorios
+
+```{r}
+rn<-c(0.3533,	0.7387,	0.2716,	0.2714,	0.6814, 0.5460,
+      0.0960,	0.5803	,0.7641,	0.2347)
+
+```
+
+# Pruebas de bondad de ajuste
+
+* Prueba $\chi^{2}$
+* Prueba Kolmogorov-Smirnov
+
+## Realiza la prueba de bobdad de ajuste para la siguiente generación de números aleatorios
+
+
+```{r}
+
+rn1<-c(0.7101,	0.4142,	0.3161,	0.9788,	0.5154,
+       0.4211,	0.0745,	0.1517,	0.7183,	0.8039,
+       0.5021,	0.2551,	0.9419,	0.5288,	0.1687,
+       0.9177,	0.9643,	0.7680,	0.4511,	0.4791,
+       0.9509,	0.2482,	0.6620,	0.9454,	0.3643,
+       0.1106,	0.4993,	0.8168,	0.7315,	0.9105)
+
+
+```
+
+
+# Pruebas Estadísticas 
+
+* Prueba de forma
+
+Realiza la prueba de forma de los siguientes números aleatorios 
+
+
+```{r}
+rn2<-c(0.2472,	0.7405,	0.7994,	0.3583,	0.8540,
+0.7045,	0.8731,	0.5767,	0.1930,	0.7135,
+0.9113,	0.2353,	0.8248,	0.1557,	0.7178,
+0.2513,	0.6935,	0.4318,	0.1032,	0.4529)
+
+```
+
+
+* Prueba de póker 
+
+Realiza la prueba de póker para los siguientes números aleatorios
+ 
+```{r}
+rn3<-c(0.2513,	0.6935,	0.4318,	0.1032,	0.4529,
+0.9135,	0.4628,	0.1901,	0.0403,	0.8734,
+0.1999,	0.8246,	0.2733,	0.8718,	0.9049,
+0.7424,	0.8010,	0.3438,	0.3709,	0.4956)
+```
+
+
+* Prueba de corridas arriba y abajo 
+
+Realiza la prueba de corridas arriba y abajo con los siguientes números aleatorio
+
+
+
+```{r}
+rn4<-c(0.9007,	0.2870,	0.2594,	0.0979,	0.4173,
+0.6730,	0.8047,	0.9906,	0.5968,	0.4850,
+0.8569,	0.8480,	0.9383,	0.4772,	0.8019,
+0.5446,	0.6417,	0.9093,	0.5716,	0.9735)
+```
+
+* Prueba de series 
+
+Realiza la prueba de series para los siguientes números aleatorios 
+
+```{r}
+
+rn5<-c(0.1065,	0.7193,	0.3294,	0.8627,	0.4874,
+0.5051,	0.5040,	0.7489,	0.9414,	0.4211,
+0.0479,	0.0080,	0.9232,	0.7443,	0.5079,
+0.1375,	0.6092,	0.1571,	0.5041,	0.5716)
+
+
+```
+
+
+* Prueba de huecos 
+
+ Realiza la prueba de huecos de los siguientes números aleatorios
+ 
+ 
+```{r}
+rn6<-c(0.7506,	0.7564,	0.8147,	0.4727,	0.9582,
+0.1053,	0.4112,	0.7175,	0.9581,	0.8037,
+0.8387,	0.4576,	0.2731,	0.3883,	0.7481,
+0.9484,	0.6049,	0.6110,	0.8134,	0.2706)
+```
+ 
+* Prueba de Corrida Arriba-Abajo de la media
+
+Realiza la pruebha de corridas arriba-abajo de la media para los siguientes 
+números aleratorios
+
+
+```{r}
+rn7<-c(0.9633,	0.2437,	0.7840,	0.9901,	0.9739,
+0.2662,	0.5986,	0.0602,	0.1162,	0.4795,
+0.8354,	0.7828,	0.5135,	0.8302,	0.7702,
+0.6469,	0.3335,	0.5556,	0.8791,	0.2910)
+```
+
+
+# Generación de variables aleatorios
+
+Genera 100 números aleatorios a partir de un generador uniforme, exponencial, triangular y Weibull para simular:
+
+* Una variable aleatoria con una distribución uniforme entre 2 y 6
+* Una variable aleatoria para una distribución exponencial con media $\frac{1}{\lambda}=8$
+* Una variable aleatoria con una distribución triangular con $a=2$, $b=6$ y $c=9$.
+* Una variable aleatoria con una distribución Weibull con $\beta=25$, $\alpha=2$
+
+
+* El número de piezas defectuosas dentro de los lotes de tamaño 1000 que envía cierto proveedor sigue una distribución de probabilidad cuya función
+de densidad está dada por:
+
+$$f(x)=\frac{\frac{1}{2}(\frac{1}{2})^{x-1}}{1-(\frac{1}{2})^{20}}  $$
+
+si $x=1,2,3,...,20$
+
+
+Simule los valores para 50 lotes consecutivos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
